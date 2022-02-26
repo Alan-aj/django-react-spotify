@@ -1,0 +1,11 @@
+node_modules
+.env
+
+
+# secure
+# ``````
+# - pip install python-decouple
+# - create .env file
+# - add all keys
+# - from decouple import config (add in settings)
+# - change to -> config('SECRET_KEY')
