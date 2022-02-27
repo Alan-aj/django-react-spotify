@@ -1,5 +1,6 @@
 node_modules
 .env
+
 # Text backup files
 *.bak
 
@@ -14,3 +15,8 @@ node_modules
 # - add all keys
 # - from decouple import config (add in settings)
 # - change to -> config('SECRET_KEY')
+
+# Git
+# ```
+# git rm -r --cached db.sqlite3
+# 
