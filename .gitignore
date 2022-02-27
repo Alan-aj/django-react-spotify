@@ -27,3 +27,8 @@ media
 # ```
 # git rm -r --cached db.sqlite3
 # 
+
+# Development
+# ```````````
+# music_player\frontend> -> npm run dev
+# python manage.py runserver
