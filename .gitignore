@@ -1,11 +1,17 @@
 node_modules
 .env
 
-# Text backup files
-*.bak
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
 
-# Database
-*.sqlite3
+# Backup files # 
+*.bak 
+.idea/
 
 
 # secure
