@@ -2,6 +2,8 @@ node_modules
 main.js*
 .env
 
+README.md
+
 # Django #
 *.log
 *.pot
