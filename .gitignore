@@ -33,3 +33,7 @@ media
 # ```````````
 # music_player\frontend> -> npm run dev
 # python manage.py runserver
+
+# npm
+# ````
+# npm i react-router-dom@5.2.0
