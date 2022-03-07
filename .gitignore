@@ -27,7 +27,7 @@ media
 # Git
 # ```
 # git rm -r --cached db.sqlite3
-# 
+# git commit -m "message" -m "detailed discription"
 
 # Development
 # ```````````
@@ -37,3 +37,21 @@ media
 # npm
 # ````
 # npm i react-router-dom@5.2.0
+
+# Setup
+# `````
+# ~~~ Django ~~~
+# pip install django djangorestframework
+# django-admin startproject music_player
+# django-admin startapp api
+# python manage.py makemigrations (when database modified)
+# python manage.py migrate (to apply the migration)
+# django-admin startapp frontend
+# 
+# ~~~ React ~~~
+# npm init -y
+# npm i webpack webpack-cli --save-dev
+# npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+# npm i react react-dom --save-dev
+# npm install @material-ui/core
+# npm install react-router-dom
