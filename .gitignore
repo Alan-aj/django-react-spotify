@@ -56,3 +56,10 @@ media
 # npm install @material-ui/core
 # npm install react-router-dom
 # npm install @material-ui/lab (to use alert)
+
+
+# activate
+# python manage.py runserver
+# npm run dev
+# git remote -v
+# git log -> q
