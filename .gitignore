@@ -28,6 +28,7 @@ media
 # ```
 # git rm -r --cached db.sqlite3
 # git commit -m "message" -m "detailed discription"
+# $ git restore --staged <file>
 
 # Development
 # ```````````
