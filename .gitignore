@@ -64,3 +64,5 @@ media
 # npm run dev
 # git remote -v
 # git log -> q
+
+# python manage.py runserver 0.0.0.0:8000
