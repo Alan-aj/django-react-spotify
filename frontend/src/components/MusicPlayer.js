@@ -13,14 +13,30 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 export default class MusicPlayer extends Component {
   constructor(props) {
     super(props);
+    // this.state = { msg: "" };
   }
 
   skipSong() {
+    var respStatus;
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     };
-    fetch("/spotify/skip", requestOptions);
+    fetch("/spotify/skip", requestOptions).then((response) => {
+      respStatus = response.status;
+      if (respStatus == 204) {
+        this.props.updateMsg("Oops.. Need a premium Spotify account");
+        this.setState({
+          msg: "Oops.. Need a premium Spotify account",
+        });
+      } else if (respStatus == 500) {
+        this.setState({ msg: "Server error, try again" });
+      } else {
+        this.setState({ msg: "" });
+      }
+
+      console.log(respStatus);
+    });
   }
 
   pauseSong() {
@@ -67,8 +83,8 @@ export default class MusicPlayer extends Component {
                   this.skipSong();
                 }}
               >
-                {" "} {this.props.votes} /{" "}
-                {this.props.votes_required} {" "}
+                {" "}
+                {this.props.votes} / {this.props.votes_required}{" "}
                 <SkipNextIcon />
               </IconButton>
             </div>

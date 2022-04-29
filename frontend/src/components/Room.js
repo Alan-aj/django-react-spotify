@@ -25,6 +25,7 @@ export default class Room extends Component {
     this.getRoomDetails = this.getRoomDetails.bind(this);
     this.authenticateSpotify = this.authenticateSpotify.bind(this);
     this.getCurrentSong = this.getCurrentSong.bind(this);
+    this.updateMsg = this.updateMsg.bind(this);
     this.getRoomDetails();
   }
 
@@ -78,8 +79,8 @@ export default class Room extends Component {
       .then((response) => {
         if (!response.ok) {
           return {
-            title: "Song not found",
-            artist: "Clear cache and refresh the page",
+            title: "Open Spotify",
+            artist: "Play a song on spotify",
             image_url: "https://wallpaperaccess.com/full/2374217.png",
           };
         } else {
@@ -88,15 +89,15 @@ export default class Room extends Component {
             return response.json();
           } else {
             const string = {
-              title: "Song not found",
-              artist: "Clear cache and refresh the page",
+              title: "Open Spotify",
+              artist: "Play a song on spotify",
               image_url: "https://wallpaperaccess.com/full/2374217.png",
             };
             const json =
               string === ""
                 ? {
-                    title: "Song not found",
-                    artist: "Clear cache and refresh the page",
+                    title: "Open Spotify",
+                    artist: "Play a song on spotify",
                     image_url: "https://wallpaperaccess.com/full/2374217.png",
                   }
                 : JSON.parse(JSON.stringify(string));
@@ -108,7 +109,7 @@ export default class Room extends Component {
         this.setState({ song: data });
         if (resStatus == 204) {
           this.setState({
-            msg: "No spotify window found — Open Spotify App for playing",
+            msg: "Oops, No spotify app found  —  Login to spotify",
           });
         } else if (resStatus == 500) {
           this.setState({ msg: "Server error, try again" });
@@ -119,6 +120,10 @@ export default class Room extends Component {
         // console.log(data);
         // console.log(resStatus);
       });
+  }
+
+  updateMsg(ms) {
+    this.setState({ msg: ms });
   }
 
   leaveButtonPressed() {
@@ -200,7 +205,7 @@ export default class Room extends Component {
             Code: {this.roomCode}
           </Typography>
         </Grid>
-        <MusicPlayer {...this.state.song} />
+        <MusicPlayer {...this.state.song} updateMsg={this.updateMsg} />
         {this.state.isHost ? this.renderSettingsButton() : null}
         <Grid item xs={12} align="center">
           <Button
