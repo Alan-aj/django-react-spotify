@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Grid, Button, Typography } from "@material-ui/core";
 import CreateRoomPage from "./CreateRoomPage";
 import MusicPlayer from "./MusicPlayer";
+import Alert from "@material-ui/lab/Alert";
+import { Collapse } from "@material-ui/core";
 
 export default class Room extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ export default class Room extends Component {
       showSettings: false,
       spotifyAuthenticated: false,
       song: {},
+      msg: "",
     };
     this.roomCode = this.props.match.params.roomCode;
     this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
@@ -70,17 +73,51 @@ export default class Room extends Component {
   }
 
   getCurrentSong() {
+    var resStatus;
     fetch("/spotify/current-song")
       .then((response) => {
         if (!response.ok) {
-          return {};
+          return {
+            title: "Song not found",
+            artist: "Clear cache and refresh the page",
+            image_url: "https://wallpaperaccess.com/full/2374217.png",
+          };
         } else {
-          return response.json();
+          resStatus = response.status;
+          if (resStatus == 200) {
+            return response.json();
+          } else {
+            const string = {
+              title: "Song not found",
+              artist: "Clear cache and refresh the page",
+              image_url: "https://wallpaperaccess.com/full/2374217.png",
+            };
+            const json =
+              string === ""
+                ? {
+                    title: "Song not found",
+                    artist: "Clear cache and refresh the page",
+                    image_url: "https://wallpaperaccess.com/full/2374217.png",
+                  }
+                : JSON.parse(JSON.stringify(string));
+            return json;
+          }
         }
       })
       .then((data) => {
         this.setState({ song: data });
-        console.log(data);
+        if (resStatus == 204) {
+          this.setState({
+            msg: "No spotify window found — Open Spotify App for playing",
+          });
+        } else if (resStatus == 500) {
+          this.setState({ msg: "Server error, try again" });
+        } else {
+          this.setState({ msg: "" });
+        }
+
+        // console.log(data);
+        // console.log(resStatus);
       });
   }
 
@@ -146,6 +183,18 @@ export default class Room extends Component {
     }
     return (
       <Grid container spacing={1}>
+        <Grid item xs={12} align="center">
+          <Collapse in={this.state.msg != ""}>
+            <Alert
+              severity="info"
+              onClose={() => {
+                this.setState({ msg: "" });
+              }}
+            >
+              {this.state.msg}
+            </Alert>
+          </Collapse>
+        </Grid>
         <Grid item xs={12} align="center">
           <Typography variant="h4" component="h4">
             Code: {this.roomCode}
