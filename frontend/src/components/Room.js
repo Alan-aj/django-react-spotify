@@ -25,7 +25,6 @@ export default class Room extends Component {
     this.getRoomDetails = this.getRoomDetails.bind(this);
     this.authenticateSpotify = this.authenticateSpotify.bind(this);
     this.getCurrentSong = this.getCurrentSong.bind(this);
-    this.updateMsg = this.updateMsg.bind(this);
     this.getRoomDetails();
   }
 
@@ -77,6 +76,7 @@ export default class Room extends Component {
     var resStatus;
     fetch("/spotify/current-song")
       .then((response) => {
+        resStatus = response.status;
         if (!response.ok) {
           return {
             title: "Open Spotify",
@@ -84,7 +84,6 @@ export default class Room extends Component {
             image_url: "https://wallpaperaccess.com/full/2374217.png",
           };
         } else {
-          resStatus = response.status;
           if (resStatus == 200) {
             return response.json();
           } else {
@@ -107,23 +106,21 @@ export default class Room extends Component {
       })
       .then((data) => {
         this.setState({ song: data });
+
         if (resStatus == 204) {
           this.setState({
             msg: "Oops, No spotify app found  —  Login to spotify",
           });
         } else if (resStatus == 500) {
-          this.setState({ msg: "Server error, try again" });
+          this.setState({
+            msg: "Server error, try to leave room and login again",
+          });
+        } else if (resStatus == 404) {
+          this.setState({ msg: "Oops not found, try again" });
         } else {
           this.setState({ msg: "" });
         }
-
-        // console.log(data);
-        // console.log(resStatus);
       });
-  }
-
-  updateMsg(ms) {
-    this.setState({ msg: ms });
   }
 
   leaveButtonPressed() {
@@ -205,7 +202,7 @@ export default class Room extends Component {
             Code: {this.roomCode}
           </Typography>
         </Grid>
-        <MusicPlayer {...this.state.song} updateMsg={this.updateMsg} />
+        <MusicPlayer {...this.state.song} />
         {this.state.isHost ? this.renderSettingsButton() : null}
         <Grid item xs={12} align="center">
           <Button
